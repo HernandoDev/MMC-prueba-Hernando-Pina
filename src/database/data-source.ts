@@ -7,8 +7,8 @@ export const dataSource = new DataSource({
   type: "mysql",
   host: "db", // Linked service name in docker-compose.yml
   port: 3306, // Linked port in docker-compose.yml
-  username: "root",
-  password: "toor",
+  username: "root2",
+  password: "root2",
   database: "mmc_technicaltest",
   entities: [User, Role, Transaction],
   logging: true,
