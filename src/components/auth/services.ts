@@ -28,7 +28,7 @@ export class AuthServices {
    */
 
   static async validatePassword(inputPassword: string, userPassword: string) {
-      const passwordMatch = await argon2.verify(userPassword, inputPassword);
+      const passwordMatch = await argon2.verify(userPassword.toString(), inputPassword.toString());
       return passwordMatch;
     // return inputPassword == userPassword  ;
   };
