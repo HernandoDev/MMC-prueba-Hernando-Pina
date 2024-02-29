@@ -72,8 +72,12 @@ export const checkRoleAdmin = async (req, res, next) => {
           relations: ["role"]
         });
         console.log('userJwt',userJwt);
-
-      res.status(401).send('Error: El usuario no tiene permiso para acceder a este recurso');
+      if (user.role.id.toString() === '1') {
+        console.log('El usuario es un administrador JWT');
+        next();
+      }else{
+        res.status(401).send('Error: El usuario no tiene permiso para acceder a este recurso');
+      }
     }
   } catch (error) {
     console.log(error);
