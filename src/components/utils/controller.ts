@@ -20,7 +20,7 @@ export class UtilsController {
       if (!password) {
         return res.status(400).json({ error: 'Password es necesario' });
       }
-      const hash = await argon2.hash(password);
+      const hash = await argon2.hash(password.toString());
       // const hash = password;
       await UtilsController.updateUserPassword(id, hash);
       res.status(200).json({ message: 'Password actualizada correctamente' });
