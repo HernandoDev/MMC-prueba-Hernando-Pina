@@ -39,9 +39,15 @@ export const authenticateJWT2 = (req: Request, res: Response, next: NextFunction
       if (err) {
         console.error(err);
         // reject(res.status(401).send('Error de autenticación'));
+        resolve(null);
+        return null
+
       }
       if (info) {
         // reject(res.status(401).send(info.message));
+        resolve(null);
+        return null
+
       }
       if (user) {
         res.locals.jwtPayload = user;
@@ -66,6 +72,9 @@ export const checkRoleAdmin = async (req, res, next) => {
         next();
       } else {
         const idJwt = await authenticateJWT2(req, res, next) as { id: number };
+        if (!idJwt){
+        res.status(401).send('Error: El usuario no tiene permiso para acceder a este recurso no Auth');
+        }
         const userJwt = await dataSource.manager.findOne(User, {
           where: { id: idJwt.id },
           relations: ["role"]
