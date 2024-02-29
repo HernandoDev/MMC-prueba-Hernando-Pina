@@ -54,7 +54,6 @@ export const checkRoleAdmin = async (req, res, next) => {
     res.status(401).send('Error: No se pudo encontrar al usuario');
     return;
   }
-  next();
 };
 export const checkRoleAdmin2 = () => {
   return async (req: Request, res: Response, next: NextFunction) => {
