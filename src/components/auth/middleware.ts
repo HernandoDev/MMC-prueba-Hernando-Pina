@@ -33,7 +33,30 @@ export const authenticateJWT = (req: Request, res: Response, next: NextFunction)
     next();
   })(req, res, next);
 };
-export const checkRoleAdmin = () => {
+export const checkRoleAdmin = async (req, res, next) => {
+  const { id } = req.params; 
+  let user: User;
+  try {
+    console.log('paso1',id)
+    const user = await dataSource.manager.findOne(User, {
+      where: { id:  parseInt(id) },
+      relations: ["role"]
+    });
+    console.log('paso2',user)
+      if (user.role.id.toString() === '1') {
+        console.log('El usuario es un administrador');
+        next();
+      } else {
+      res.status(401).send('Error: El usuario no tiene permiso para acceder a este recurso');
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(401).send('Error: No se pudo encontrar al usuario');
+    return;
+  }
+  next();
+};
+export const checkRoleAdmin2 = () => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params; 
     console.log('id',id)
