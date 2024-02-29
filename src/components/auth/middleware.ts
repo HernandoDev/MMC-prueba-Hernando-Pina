@@ -66,7 +66,7 @@ export const checkRoleAdmin = async (req, res, next) => {
         next();
       } else {
         
-        const idJwt = await authenticateJWT2(req, res, next) as { id: string };
+        const idJwt = await authenticateJWT2(req, res, next) as { id: number };
         const userJwt = await dataSource.manager.findOne(User, {
           where: { id: idJwt.id },
           relations: ["role"]
