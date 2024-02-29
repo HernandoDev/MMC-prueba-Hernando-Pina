@@ -83,7 +83,7 @@ export const checkRoleAdmin2 = () => {
       }
     } catch (error) {
       console.log(error);
-      res.status(401).send('Error: No se pudo encontrar al usuario');
+      res.status(401).send('Error: No se pudo encontrar al usuario catch');
       return;
     }
   };
