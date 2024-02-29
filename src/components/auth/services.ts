@@ -16,6 +16,7 @@ export class AuthServices {
     const user = await dataSource.manager
       .createQueryBuilder(User, 'user')
       .addSelect('user.password')
+      .addSelect('user.role')
       .where('user.username = :username', { username })
       .getOne();
     return user;
