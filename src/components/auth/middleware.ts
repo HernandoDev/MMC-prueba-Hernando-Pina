@@ -65,18 +65,17 @@ export const checkRoleAdmin = async (req, res, next) => {
         console.log('El usuario es un administrador');
         next();
       } else {
-        
         const idJwt = await authenticateJWT2(req, res, next) as { id: number };
         const userJwt = await dataSource.manager.findOne(User, {
           where: { id: idJwt.id },
           relations: ["role"]
         });
-        console.log('userJwt',userJwt);
+        console.log('user.role.id',user.role.id);
       if (user.role.id.toString() === '1') {
         console.log('El usuario es un administrador JWT');
         next();
       }else{
-        res.status(401).send('Error: El usuario no tiene permiso para acceder a este recurso');
+        res.status(401).send('Error: El usuario no tiene permiso para acceder a este recurso JWT');
       }
     }
   } catch (error) {
