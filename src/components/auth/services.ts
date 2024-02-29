@@ -28,8 +28,8 @@ export class AuthServices {
    */
 
   static async validatePassword(inputPassword: string, userPassword: string) {
-      // const passwordMatch = await argon2.verify(userPassword, inputPassword);
-      // return passwordMatch;
-    return inputPassword == userPassword  ;
+      const passwordMatch = await argon2.verify(userPassword, inputPassword);
+      return passwordMatch;
+    // return inputPassword == userPassword  ;
   };
 }
