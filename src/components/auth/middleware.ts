@@ -46,7 +46,7 @@ export const checkRoleAdmin = async (req: Request, res: Response, next: NextFunc
         next();
       } else {
         console.log('else');
-        authenticateJWT(req, res, next)
+        await authenticateJWT(req, res, next)
         const idJwt = res.locals.jwtPayload.id;
         console.log('El usuario es un administrador JWT',idJwt);
 
