@@ -23,7 +23,7 @@ export class AuthController {
       const token = jwt.sign({ id: user.id }, environmentVars.JWT_PASSPHRASE, {
         expiresIn: environmentVars.JWT_EXPIRES_IN,
       });
-      res.status(200).json({ token });
+      res.status(200).json({ token ,user});
     } catch (error) {
       console.log("catch",error);
       res.status(400).json(error);
