@@ -24,10 +24,12 @@ export class AuthController {
         expiresIn: environmentVars.JWT_EXPIRES_IN,
       });
       delete user.password;
-      res.status(200).json({ token ,user});
+      let message = 'Sesión iniciada'
+      res.status(200).json({ token ,user,message});
     } catch (error) {
       console.log("catch",error);
-      res.status(400).json(error);
+      let message = 'Error al inciar sesión'
+      res.status(400).json(error,message);
     }
   };
 }
