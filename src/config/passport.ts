@@ -9,6 +9,7 @@ const options = {
   secretOrKey: environmentVars.JWT_PASSPHRASE,
 };
 
+// Configuracion del  passport para validar el token JWT
 passport.use(
   new JwtStrategy(options, async (jwtPayload, done) => {
     let user: User;

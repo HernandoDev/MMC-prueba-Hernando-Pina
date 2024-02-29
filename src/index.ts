@@ -35,6 +35,7 @@ app.use(routes);
 dataSource
   .initialize()
   .then(() => {
+    // inicializa el passport
     app.use(passport.initialize());
     console.log("Data Source has been initialized!");
   })

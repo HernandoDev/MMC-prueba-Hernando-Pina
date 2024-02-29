@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 
 export class AuthController {
   /**
-   * @description Gets the User view.
+   * @description Metodo que realiza el Login  de un usuario y genera un token JWT para retornarlo junto a los datos del usuario
    * @param {Req} req
    * @param {Res} res
    */
