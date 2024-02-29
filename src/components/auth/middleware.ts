@@ -37,12 +37,10 @@ export const checkRoleAdmin = async (req, res, next) => {
   const { id } = req.params; 
   let user: User;
   try {
-    console.log('paso1',id)
     const user = await dataSource.manager.findOne(User, {
       where: { id:  parseInt(id) },
       relations: ["role"]
     });
-    console.log('paso2',user)
       if (user.role.id.toString() === '1') {
         console.log('El usuario es un administrador');
         next();
@@ -58,15 +56,12 @@ export const checkRoleAdmin = async (req, res, next) => {
 export const checkRoleAdmin2 = () => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params; 
-    console.log('id',id)
     let user: User;
     try {
-      console.log('paso1',id)
       const user = await dataSource.manager.findOne(User, {
         where: { id:  parseInt(id) },
         relations: ["role"]
       });
-      console.log('paso2',user)
         if (user.role.id.toString() === '1') {
           console.log('El usuario es un administrador');
           next();
@@ -91,8 +86,6 @@ export const checkRole = (roles: string[]) => {
         where: { id: id },
         relations: ["role"]
       });
-      console.log(user);
-      
       if (roles.indexOf(user.role.id.toString()) > -1) {
         if (user.role.id.toString() === '1') {
           console.log('El usuario es un administrador');
