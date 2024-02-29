@@ -14,13 +14,11 @@ export class AuthServices {
       return null
     }
     const user = await dataSource.manager
-    
       .createQueryBuilder(User, 'user')
       .addSelect('user.password')
-      .addSelect('user.role')
+      .innerJoinAndSelect('user.role', 'role')
       .where('user.username = :username', { username })
       .getOne();
-      console.log(user,'ATENTO NANDO  2---------------');
     return user;
   };
 
