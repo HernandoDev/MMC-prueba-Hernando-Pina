@@ -76,7 +76,31 @@ export const checkRoleAdmin = async (req, res, next) => {
     return;
   }
 };
+export const authenticateJWT2 = (req: Request, res: Response, next: NextFunction) => {
+  return new Promise((resolve, reject) => {
+    passport.authenticate('jwt', { session: false }, (err, user, info) => {
+      if (err) {
+        console.error(err);
+        // reject(res.status(401).send('Error de autenticación'));
+        resolve(null);
+        return null
 
+      }
+      if (info) {
+        // reject(res.status(401).send(info.message));
+        resolve(null);
+        return null
+
+      }
+      if (user) {
+        res.locals.jwtPayload = user;
+        resolve(user);
+        return user
+      }
+      // next();
+    })(req, res, next);
+  });
+};
 // Comprueba que el role del usuario es el indicado para la ruta a la que quiere acceder 
 // @param {Req} id del usuario
 export const checkRole = (roles: string[]) => {

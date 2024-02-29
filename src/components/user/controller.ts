@@ -72,7 +72,7 @@ export class UserController {
   };
 
   /**
-   * @description Gets User entity.
+   * @description Obtiene los datos de transaccion de un usuario especifico
    * @param {Req} req
    * @param {Res} res
    */
