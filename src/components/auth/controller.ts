@@ -13,6 +13,8 @@ export class AuthController {
     try {
       // Your code here: Generate JWT
       const user = await AuthServices.findUser(req.body.username);
+      console.log(user,'ATENTO NANDO ---------------');
+      
       if (!user) {
         return res.status(400).json({ error: 'Username no encontrado' });
       }
