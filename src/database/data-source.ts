@@ -14,3 +14,15 @@ export const dataSource = new DataSource({
   logging: true,
   synchronize: true,
 });
+
+export const dataSourceDocker = new DataSource({
+  type: "mysql",
+  host: "db", // Linked service name in docker-compose.yml
+  port: 3306, // Linked port in docker-compose.yml
+  username: "root",
+  password: "toor",
+  database: "mmc_technicaltest",
+  entities: [User, Role, Transaction],
+  logging: true,
+  synchronize: true,
+});

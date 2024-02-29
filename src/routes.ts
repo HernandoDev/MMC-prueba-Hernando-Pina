@@ -14,6 +14,7 @@ const customerRole = '2'
 routes.patch('/private/utils/user/:id/password/reset',
   // AuthMiddleware.authenticateJWT,
   UtilsMiddleware.passwordResetMiddleware,
+  AuthMiddleware.checkRoleAdmin,
   // [AuthMiddleware.checkRole([adminRole])],
   UtilsController.passwordUpdate
 );
