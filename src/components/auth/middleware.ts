@@ -33,6 +33,25 @@ export const authenticateJWT = (req: Request, res: Response, next: NextFunction)
     next();
   })(req, res, next);
 };
+export const authenticateJWT2 = (req: Request, res: Response, next: NextFunction) => {
+  return new Promise((resolve, reject) => {
+    passport.authenticate('jwt', { session: false }, (err, user, info) => {
+      if (err) {
+        console.error(err);
+        reject(res.status(401).send('Error de autenticación'));
+      }
+      if (info) {
+        reject(res.status(401).send(info.message));
+      }
+      if (user) {
+        res.locals.jwtPayload = user;
+        resolve(user);
+      }
+      next();
+    })(req, res, next);
+  });
+};
+
 export const checkRoleAdmin = async (req, res, next) => {
   const { id } = req.params; 
   let user: User;
@@ -45,6 +64,9 @@ export const checkRoleAdmin = async (req, res, next) => {
         console.log('El usuario es un administrador');
         next();
       } else {
+        const idJwt =await authenticateJWT2(req, res, next)
+        console.log('idJwt',idJwt);
+        
       res.status(401).send('Error: El usuario no tiene permiso para acceder a este recurso');
     }
   } catch (error) {
@@ -53,41 +75,7 @@ export const checkRoleAdmin = async (req, res, next) => {
     return;
   }
 };
-export const checkRoleAdmin2 = () => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params; 
-    let user: User;
-    try {
-      const user = await dataSource.manager.findOne(User, {
-        where: { id:  parseInt(id) },
-        relations: ["role"]
-      });
-        if (user.role.id.toString() === '1') {
-          console.log('El usuario es un administrador');
-          next();
-        } else {
-        const idJwt = res.locals.jwtPayload.id;
-        console.log('El usuario es un administrador JWT',idJwt);
 
-        const user = await dataSource.manager.findOne(User, {
-          where: { id: idJwt },
-          relations: ["role"]
-        });
-        if (user.role.id.toString() === '1') {
-          console.log('El usuario es un administrador JWT');
-          next();
-        }else{
-          res.status(401).send('Error: El usuario no tiene permiso para acceder a este recurso por no ser admin');
-        }
-        // res.status(401).send('Error: El usuario no tiene permiso para acceder a este recurso');
-      }
-    } catch (error) {
-      console.log(error);
-      res.status(401).send('Error: No se pudo encontrar al usuario catch');
-      return;
-    }
-  };
-};
 
 export const checkRole = (roles: string[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
