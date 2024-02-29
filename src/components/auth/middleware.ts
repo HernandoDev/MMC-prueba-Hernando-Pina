@@ -38,16 +38,17 @@ export const authenticateJWT2 = (req: Request, res: Response, next: NextFunction
     passport.authenticate('jwt', { session: false }, (err, user, info) => {
       if (err) {
         console.error(err);
-        reject(res.status(401).send('Error de autenticación'));
+        // reject(res.status(401).send('Error de autenticación'));
       }
       if (info) {
-        reject(res.status(401).send(info.message));
+        // reject(res.status(401).send(info.message));
       }
       if (user) {
         res.locals.jwtPayload = user;
         resolve(user);
+        return user
       }
-      next();
+      // next();
     })(req, res, next);
   });
 };
