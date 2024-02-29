@@ -29,7 +29,7 @@ export class AuthController {
     } catch (error) {
       console.log("catch",error);
       let message = 'Error al inciar sesión'
-      res.status(400).json(error,message);
+      res.status(400).json(error);
     }
   };
 }
