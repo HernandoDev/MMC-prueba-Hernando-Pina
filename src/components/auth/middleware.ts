@@ -71,7 +71,7 @@ export const checkRoleAdmin = async (req, res, next) => {
           relations: ["role"]
         });
         console.log('user.role.id',user.role.id);
-      if (user.role.id.toString() === '1') {
+      if (userJwt.role.id.toString() === '1') {
         console.log('El usuario es un administrador JWT');
         next();
       }else{
