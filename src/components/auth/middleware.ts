@@ -33,6 +33,24 @@ export const authenticateJWT = (req: Request, res: Response, next: NextFunction)
     next();
   })(req, res, next);
 };
+export const authenticateJWTPromesa = (req: Request, res: Response, next: NextFunction) => {
+  return new Promise((resolve, reject) => {
+    passport.authenticate('jwt', { session: false }, (err, user, info) => {
+      if (err) {
+        console.error(err);
+        reject('Error de autenticación');
+      }
+      if (info) {
+        reject(info.message);
+      }
+      if (user) {
+        res.locals.jwtPayload = user;
+      }
+      resolve(next());
+    })(req, res, next);
+  });
+};
+
 export const checkRoleAdmin = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params; 
   let user: User;
@@ -46,7 +64,7 @@ export const checkRoleAdmin = async (req: Request, res: Response, next: NextFunc
         next();
       } else {
         console.log('else');
-        await authenticateJWT(req, res, next)
+        await authenticateJWTPromesa(req, res, next)
         const idJwt = res.locals.jwtPayload.id;
         console.log('El usuario es un administrador JWT',idJwt);
 
