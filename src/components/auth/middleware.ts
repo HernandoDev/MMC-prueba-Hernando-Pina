@@ -67,6 +67,8 @@ export const checkRoleAdmin2 = () => {
           next();
         } else {
         const idJwt = res.locals.jwtPayload.id;
+        console.log('El usuario es un administrador JWT',idJwt);
+
         const user = await dataSource.manager.findOne(User, {
           where: { id: idJwt },
           relations: ["role"]
