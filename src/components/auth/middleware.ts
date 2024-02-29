@@ -33,25 +33,7 @@ export const authenticateJWT = (req: Request, res: Response, next: NextFunction)
     next();
   })(req, res, next);
 };
-export const authenticateJWTPromesa = (req: Request, res: Response, next: NextFunction) => {
-  return new Promise((resolve, reject) => {
-    passport.authenticate('jwt', { session: false }, (err, user, info) => {
-      if (err) {
-        console.error(err);
-        reject('Error de autenticación');
-      }
-      if (info) {
-        reject(info.message);
-      }
-      if (user) {
-        res.locals.jwtPayload = user;
-      }
-      resolve(next());
-    })(req, res, next);
-  });
-};
-
-export const checkRoleAdmin = async (req: Request, res: Response, next: NextFunction) => {
+export const checkRoleAdmin = async (req, res, next) => {
   const { id } = req.params; 
   let user: User;
   try {
@@ -63,8 +45,27 @@ export const checkRoleAdmin = async (req: Request, res: Response, next: NextFunc
         console.log('El usuario es un administrador');
         next();
       } else {
-        console.log('else');
-        await authenticateJWTPromesa(req, res, next)
+      res.status(401).send('Error: El usuario no tiene permiso para acceder a este recurso');
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(401).send('Error: No se pudo encontrar al usuario');
+    return;
+  }
+};
+export const checkRoleAdmin2 = () => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params; 
+    let user: User;
+    try {
+      const user = await dataSource.manager.findOne(User, {
+        where: { id:  parseInt(id) },
+        relations: ["role"]
+      });
+        if (user.role.id.toString() === '1') {
+          console.log('El usuario es un administrador');
+          next();
+        } else {
         const idJwt = res.locals.jwtPayload.id;
         console.log('El usuario es un administrador JWT',idJwt);
 
@@ -78,14 +79,15 @@ export const checkRoleAdmin = async (req: Request, res: Response, next: NextFunc
         }else{
           res.status(401).send('Error: El usuario no tiene permiso para acceder a este recurso por no ser admin');
         }
+        // res.status(401).send('Error: El usuario no tiene permiso para acceder a este recurso');
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(401).send('Error: No se pudo encontrar al usuario catch');
+      return;
     }
-  } catch (error) {
-    console.log(error);
-    res.status(401).send('Error: No se pudo encontrar al usuario');
-    return;
-  }
+  };
 };
-
 
 export const checkRole = (roles: string[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
