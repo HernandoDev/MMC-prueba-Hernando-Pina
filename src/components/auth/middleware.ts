@@ -39,7 +39,7 @@ export const checkRoleAdmin = () => {
     let user: User;
     try {
       const user = await dataSource.manager.findOne(User, {
-        where: { id: id },
+        where: { id:  parseInt(id) },
         relations: ["role"]
       });
       console.log(user);
